@@ -118,9 +118,21 @@ public class Action {
 
         return deptId;
     }
+//    /**
+//     * Search For Lecturers
+//     * */
+
     /**
-     * Search For Lecturers
+     * Clear Table
      * */
+    void clearTable(Object[][] tbl){
+        for (int k = 0; k < tbl.length; k++) {
+            for (int l = 0; l < tbl[k].length; l++) {
+                tbl[k][l] = null;
+            }
+        }
+
+    }
 
 }
 

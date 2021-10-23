@@ -4,16 +4,17 @@ import java.awt.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-//import org.
 
 abstract class Dec{
     ArrayList<String> obj = new ArrayList<>();
     HashMap<Integer, String> map = new HashMap<>();
+    DefaultListModel<String> item = new DefaultListModel<>();
+
     String empty = "----------------";
     int valid = 0;
     String message = "";
     int cl = 0;
-    int series, deptNum,  lectNum, group;
+    int deptNum,  lectNum, group;
     String lectName, lectDept, lectGender, lectMobile, deptName, deptLvl, deptStd, facName, facMobile, facGen;
     String url = "jdbc:mysql://localhost/allocate";
     String uname = "root";
@@ -22,28 +23,51 @@ abstract class Dec{
     JLabel[] outPut = {new JLabel("Name: "), new JLabel("Department: "), new JLabel("Mobile: ")};
     JLabel[] $_outPut_response = {new JLabel(), new JLabel(), new JLabel()};
 
-    String[] btnName = {"Supervisors","Supervisors","departments", "allocate", "facilitators", "course"};
+    JLabel[] outPutRand = {new JLabel("Name: "), new JLabel("Department: "), new JLabel("Mobile: ")};
+    JLabel[] $_outPut_response_rand = {new JLabel(), new JLabel(), new JLabel()};
+
+    String[] btnName = {"Supervisors","Supervisors", "facilitators", "departments", "allocate", "course"};
     String[] allName = {"Manual","Random"};
     JTextField[] src = {new JTextField(), new JTextField(), new JTextField(), new JTextField()};
 
     CardLayout view = new CardLayout();
     JPanel preview = new JPanel(view);
-    JPanel[] resultView = {new JPanel(null){
-        @Override
-        public void paint(Graphics g) {
-            super.paint(g);
-            g.setColor(new Color(90,70,255));
-            g.fillRoundRect(0,210,800,60,0,0);
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("MONOSPACE", Font.BOLD, 30));
-            g.drawString("Allocated Students", 10, 250);
+    JPanel preview2 = new JPanel(view);
+//    JPanel
+    JPanel[] resultView = {
+        new JPanel(null){
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                g.setColor(new Color(90,70,255));
+                g.fillRoundRect(0,210,800,60,0,0);
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("MONOSPACE", Font.BOLD, 30));
+                g.drawString("Allocated Students", 10, 250);
+            }
+        },
+        new JPanel(null){
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                g.setColor(new Color(90,70,255));
+                g.fillRoundRect(0,210,800,60,0,0);
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("MONOSPACE", Font.BOLD, 30));
+                g.drawString("Allocated Students", 10, 250);
+            }
         }
-    }, new JPanel(null)};
+    };
 
     String[] col = {"S/N","Department", "Level", "Group N0"};
     Object[][] manual_data = new String[500][4];
     JTable manual = new JTable(manual_data, col);
     JScrollPane maual_scroll = new JScrollPane(manual);
+
+    String[] colRand = {"S/N","Department", "Level", "Group N0"};
+    Object[][] rand_data = new String[500][4];
+    JTable rand = new JTable(rand_data, colRand);
+    JScrollPane rand_scroll = new JScrollPane(rand);
 
     JPanel[] $_resultView_table_panel = {
             new JPanel(new CardLayout()),
@@ -60,8 +84,8 @@ abstract class Dec{
     };
 
     String[] dashColumns = {"S/N","Name", "Department", "Mobile", "Status"};
-    String[] deptColumns = {"S/N","Department", "Level", "Total Students","Total Group", "Allocated", "Not Allocated"};
-    String[] facColumns = {"S/N"," Name ", "Mobile", "Department", "Mobile", "Status"};
+    String[] deptColumns = {"S/N","Department", "Course", "Total Students","Total Group", "Allocated", "Not Allocated"};
+    String[] facColumns = {"S/N"," Name ", "Department", "Mobile", "Status"};
     String[][] dashData = new String[500][6];
     String[][] deptData = new String[500][7];
     String[][] facData = new String[500][7];
@@ -130,10 +154,10 @@ abstract class Dec{
 
     JFrame frame = new JFrame();
     MaskFormatter mf = new MaskFormatter("#### ### ####");
-    JPanel[] bg = {new JPanel(),new JPanel(), new JPanel()};
+    JPanel[] bg = {new JPanel(),new JPanel(), new JPanel(), new JPanel(), new JPanel()};
     JPanel[] tableHeader = {new JPanel(),new JPanel(), new JPanel(), new JPanel(), new JPanel(), new JPanel(), new JPanel()};
     JLabel[] tableHeaderText = {new JLabel("Supervisors"), new JLabel("Supervisors"), new JLabel("Departments"),
-            new JLabel("Allocate Supervisors"), new JLabel("Allocated Supervisors"), new JLabel("Allocated " +
+            new JLabel("Allocate Supervisors"), new JLabel("Allocate Supervisors"), new JLabel("Allocated " +
             "Facilitators"),
             new JLabel("Facilitators")};
 
@@ -160,8 +184,7 @@ abstract class Dec{
     JPanel nav = new JPanel();
     JLabel title = new JLabel("EED Admin");
     JPanel sideBar = new JPanel();
-    JButton[] btn = {new JButton("Dashboard "), new JButton("Supervisor"), new JButton("Department"),new JButton(
-            "Allocate"), new JButton("Facilitators"), new JButton("Course")};
+    JButton[] btn = {new JButton("Dashboard "), new JButton("Supervisor"), new JButton("Facilitators"), new JButton("Department"), new JButton("Allocate"), new JButton("Course")};
 
     Color[] transpanrent = {new Color(10,100,255, 100), new Color(0,120,20, 100) , new Color(253, 139, 0, 186)};
     Color[] colorTop = { new Color(0,50, 150) ,new Color(0,120,20), new Color(153, 83, 0)};
@@ -171,7 +194,7 @@ abstract class Dec{
     CardLayout cardLayout = new CardLayout();
     CardLayout crd = new CardLayout();
     String[] s = {"0", "0", "0"};
-    String[] display = {"Total Supervisors", "Allocated", " Not Allocated"};
+    String[] display = {"Supervisors", "Facilitators", " Departments"};
 
     int j = 0;
 
@@ -254,7 +277,20 @@ abstract class Dec{
     JPanel allocate = new JPanel();
     JLabel header3 = new JLabel("Add Facilitator");
 
-    JPanel[] allocatePanel = {new JPanel(null), new JPanel(null)};
+    JPanel[] allocatePanel = {new JPanel(null),
+        new JPanel(null){
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                g.setColor(Color.BLACK);
+                g.drawRoundRect(20, 120, 220, 120, 10,10);
+                String[] label = {"Group: "};
+                g.setFont(new Font("monospace", Font.BOLD, 17));
+                g.drawString(label[0],30, 145);
+
+            }
+        }
+    };
     JPanel border = new JPanel() {
         @Override
         public void paint(Graphics g) {
@@ -269,6 +305,8 @@ abstract class Dec{
     JTextField[] input3 = {new JTextField(), new JTextField(), new JTextField()};
     JButton[] toggle = {new JButton("Manual"), new JButton("Random")};
     JButton[] toggle2 = {new JButton("Manual"), new JButton("Random")};
+    JLabel header4 = new JLabel("Supervisors");
+    JButton submit5 = new JButton("Allocate");
 
     /**
      * Facilitators
@@ -282,6 +320,7 @@ abstract class Dec{
         }
     };
     JTextField[] input4 = {new JTextField(), new JTextField()};
+    JTextField num = new JTextField();
     JLabel[] txt3 = {new JLabel("Name: "), new JLabel("Mobile: "), new JLabel("Gender: ")};
     JButton submit4 = new JButton("Add");
     JRadioButton[] gender2 = {new JRadioButton("Male"), new JRadioButton("Female")};
@@ -290,4 +329,3 @@ abstract class Dec{
 
     protected Dec() throws ParseException {}
 }
-
