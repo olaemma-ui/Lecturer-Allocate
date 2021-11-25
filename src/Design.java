@@ -1,9 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Design extends Dec{
-    JList list;
+    JList list, list2;
     Design() throws Exception{
         selecOption.addItem(empty);
         allocateSelect[0].addItem(empty);
@@ -14,13 +13,17 @@ public class Design extends Dec{
         container.add(facilitators, String.valueOf(btn[2].getText()));
         container.add(dept, String.valueOf(btn[3].getText()));
         container.add(allocate, String.valueOf(btn[4].getText()));
+        container.add(course, String.valueOf(btn[5].getText()));
 
         container.setBounds(205, 50, 1260, 700);
 
+        course.setLayout(null);
         dash.setLayout(null);
         lect.setLayout(null);
         dept.setLayout(null);
         facilitators.setLayout(null);
+
+        course.setBackground(Color.WHITE);
         allocate.setLayout(crd);
         facilitators.setBackground(Color.white);
         dash.setBackground(Color.WHITE);
@@ -28,24 +31,8 @@ public class Design extends Dec{
         lect.setBackground(Color.WHITE);
         allocate.setBackground(Color.WHITE);
 
-
-        manual.setCellSelectionEnabled(false);
-        manual.setRowSelectionAllowed(false);
-        manual.setColumnSelectionAllowed(false);
-
-        lectTable.setCellSelectionEnabled(false);
-        lectTable.setRowSelectionAllowed(false);
-        lectTable.setColumnSelectionAllowed(false);
-
-        dashTable.setCellSelectionEnabled(false);
-        dashTable.setRowSelectionAllowed(false);
-        dashTable.setColumnSelectionAllowed(false);
-
-        deptTable.setCellSelectionEnabled(false);
-        deptTable.setRowSelectionAllowed(false);
-        deptTable.setColumnSelectionAllowed(false);
-
         header.setBounds(960, 70, 200,40);
+
         header.setFont(new Font("Monospace", Font.BOLD, 25));
         header.setForeground(Color.WHITE);
 
@@ -61,14 +48,14 @@ public class Design extends Dec{
                 input[i].setBounds(960, 150+(i*90), 280, 40);
                 selecOption.setBounds(960, 150+(i*90), 280, 40);
                 selecOption.setFont(new Font("monospace", Font.PLAIN, 17));
-                selecOption.setBackground(Color.LIGHT_GRAY);
+                selecOption.setBackground(Color.white);
                 input[i].setFont(new Font("Monospace", Font.PLAIN, 17));
-                input[i].setBackground(new Color(240, 240, 240));
-                input[i].setBorder(BorderFactory.createLineBorder(Color.lightGray, 3));
+//                input[i].setBackground(new Color(240, 240, 240));
+//                input[i].setBorder(BorderFactory.createLineBorder(Color.white, 3));
                 input[i].setForeground(Color.BLACK);
                 gender[i].setBounds(960+(i*80), 320, 70, 40);
                 gender[i].setFocusPainted(false);
-                gender[i].setBackground(Color.LIGHT_GRAY);
+                gender[i].setBackground(Color.white);
                 gender[i].setForeground(Color.BLACK);
 
                 input[1].setVisible(false);
@@ -77,9 +64,9 @@ public class Design extends Dec{
                 lect.add(input[i]);
             }
             fm.setForeground(Color.BLACK);
-            fm.setBackground(new Color(240, 240, 240));
+//            fm.setBackground(new Color(240, 240, 240));
             fm.setBounds(960, 130+(i * 95), 280, 40);
-            fm.setBorder(BorderFactory.createLineBorder(Color.lightGray, 3));
+//            fm.setBorder(BorderFactory.createLineBorder(Color.white, 3));
             fm.setFont(new Font("Monospace", Font.PLAIN, 17));
 
             txt[i].setBounds(960, 120+(i*85), 300, 40);
@@ -93,8 +80,8 @@ public class Design extends Dec{
             if (i<2){
                 input2[i].setBounds(960, 150+(i*200), 280, 40);
                 input2[i].setFont(new Font("Monospace", Font.PLAIN, 17));
-                input2[i].setBackground(new Color(240, 240, 240));
-                input2[i].setBorder(BorderFactory.createLineBorder(Color.lightGray, 3));
+//                input2[i].setBackground(new Color(240, 240, 240));
+//                input2[i].setBorder(BorderFactory.createLineBorder(Color.white, 3));
                 input2[i].setForeground(Color.BLACK);
                 dept.add(input2[i]);
             }
@@ -184,7 +171,7 @@ public class Design extends Dec{
         lectTable.getColumnModel().getColumn(4).setPreferredWidth(150);
 
         lectTable.setBackground(Color.WHITE);
-        lectTable.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+//        lectTable.setBorder(BorderFactory.createLineBorder(Color.lightGray));
         lectTable.setFont(new Font("monospace", Font.PLAIN, 15));
 
         tablePanel[1].add(lectScroll);
@@ -208,7 +195,6 @@ public class Design extends Dec{
         deptTable.getColumnModel().getColumn(5).setPreferredWidth(100);
         deptTable.getColumnModel().getColumn(6).setPreferredWidth(200);
         deptTable.setBackground(Color.WHITE);
-        deptTable.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         deptTable.setFont(new Font("monospace", Font.PLAIN, 15));
 
         tablePanel[2].add(deptScroll);
@@ -224,7 +210,7 @@ public class Design extends Dec{
         dashTable.repaint();
         dashTable.getColumn("Mobile").setWidth(6000);
         dashTable.setBackground(Color.WHITE);
-        dashTable.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+//        dashTable.setBorder(BorderFactory.createLineBorder(Color.lightGray));
         dashTable.setFont(new Font("monospace", Font.PLAIN, 15));
         dashTable.setSize(tablePanel[0].getSize());
         tablePanel[0].setBackground(Color.WHITE);
@@ -290,7 +276,7 @@ public class Design extends Dec{
 
         tableHeaderText[6].setBounds(30, 60, 300, 40);
         tableHeader[6].setBounds(20, 60, 900, 50);
-        tablePanel[4].setBounds(20,120, 900, 500);
+        tablePanel[4].setBounds(20,120, 900, 400);
         facTable.setRowHeight(30);
         facTable.getColumnModel().getColumn(0).setPreferredWidth(50);
         facTable.getColumnModel().getColumn(1).setPreferredWidth(500);
@@ -303,8 +289,8 @@ public class Design extends Dec{
             input4[i].setBounds(960,160+(i*80), 280, 40);
             input4[i].setFont(new Font("Monospace", Font.PLAIN, 18));
             input4[i].setFont(new Font("Monospace", Font.PLAIN, 17));
-            input4[i].setBackground(new Color(240, 240, 240));
-            input4[i].setBorder(BorderFactory.createLineBorder(Color.lightGray, 3));
+//            input4[i].setBackground(new Color(240, 240, 240));
+//            input4[i].setBorder(BorderFactory.createLineBorder(Color.white, 3));
             input4[i].setForeground(Color.BLACK);
 
             submit4.setBounds(1160, 200+((i+1)*80), 80, 40);
@@ -325,6 +311,74 @@ public class Design extends Dec{
             facilitators.add(submit4);
             facilitators.add(input4[i]);
         }
+
+        unit.setBounds(30, 80, 200, 40);
+        unit.setFont(new Font("monospace", Font.BOLD, 18));
+        input5.setBounds(30,120, 330,40);
+        input5.setFont(new Font("monospace", Font.BOLD, 18));
+        submit6.setBounds(260, 165, 100, 40);
+        submit6.setBackground(colorTop[1]);
+        submit6.setForeground(Color.WHITE);
+        submit6.setFont(new Font("monospace", Font.BOLD, 16));
+        submit6.setFocusPainted(false);
+        submit6.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        bg[6].setBounds(20, 250, 350,60);
+        bg[6].setBackground(new Color(90,50,255));
+
+        bg[5].setBounds(20, 20, 350,60);
+        bg[5].setBackground(new Color(90,50,255));
+
+        header5.setBounds(30, 40, 200,20);
+        header5.setFont(new Font("Monospace", Font.BOLD, 25));
+        header5.setForeground(Color.WHITE);
+
+        header6.setBounds(30, 270, 300,20);
+        header6.setFont(new Font("Monospace", Font.BOLD, 25));
+        header6.setForeground(Color.WHITE);
+
+        for (int i = 0; i < txt4.length; i++) {
+            txt4[i].setBounds(400,30+(i*80), 280, 40);
+            txt4[i].setFont(new Font("Monospace", Font.PLAIN, 23));
+            course_label_response[i].setBounds(550,30+(i*80), 280, 40);
+            course_label_response[i].setFont(new Font("Monospace", Font.PLAIN, 23));
+            course.add(txt4[i]);
+            course.add(course_label_response[i]);
+        }
+
+        course_response.setBounds(400, 240, 800,60);
+        course_response.setBackground(new Color(90,90,255));
+
+        list2 = new JList(item2);
+        JScrollPane listScroll2 = new JScrollPane(list2);
+        listScroll2.setBounds(20, 310, 350, 380);
+        list2.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        list2.setFont(new Font("monospace", Font.PLAIN, 20));
+        list2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        course_table.setBounds(400, 300,800,390);
+        course_table.add(courseScroll);
+        courseTable.setFont(new Font("monospace", Font.PLAIN, 17));
+        courseTable.getColumnModel().getColumn(0).setPreferredWidth(40);
+        courseTable.getColumnModel().getColumn(1).setPreferredWidth(600);
+        courseTable.getColumnModel().getColumn(2).setPreferredWidth(200);
+        courseTable.getColumnModel().getColumn(3).setPreferredWidth(500);
+        courseTable.getColumnModel().getColumn(4).setPreferredWidth(200);
+        courseTable.setRowHeight(30);
+        courseTable.setCellSelectionEnabled(false);
+//        courseTable.setRowSelectionAllowed(false);
+        courseTable.setColumnSelectionAllowed(false);
+
+        course.add(course_response);
+        course.add(course_table);
+        course.add(listScroll2);
+        course.add(header5);
+        course.add(header6);
+        course.add(bg[6]);
+        course.add(bg[5]);
+        course.add(submit6);
+        course.add(unit);
+        course.add(input5);
 
         facilitators.add(input4[0]);
         facilitators.add(header3);
@@ -384,7 +438,7 @@ public class Design extends Dec{
 
         list = new JList(item);
         JScrollPane listScroll = new JScrollPane(list);
-        listScroll.setBorder(BorderFactory.createLineBorder(new Color(90,50,255), 2, true));
+//        listScroll.setBorder(BorderFactory.createLineBorder(new Color(90,50,255), 2, true));
         listScroll.setBounds(20, 310, 350, 380);
 
 
@@ -418,6 +472,7 @@ public class Design extends Dec{
         num.setBounds(30, 150, 200, 30);
         allocatePanel[1].add(num);
 
+//        course.add(course_panel, String.valueOf(toggle[0].getName()));
 
         allocatePanel[1].add(submit5);
         allocatePanel[1].add(header4);
@@ -428,6 +483,19 @@ public class Design extends Dec{
         allocatePanel[1].add(tableHeader[4]);
         allocatePanel[1].setBackground(Color.WHITE);
 
+        action_btn[0].setBackground(new Color(90,90,255));
+        action_btn[1].setBackground(new Color(180, 50, 50));
+        for (int i = 0; i < action_btn.length; i++) {
+            action_btn[i].setFocusPainted(false);
+            action_btn[i].setBorderPainted(false);
+            action_btn[i].setBounds(1000+(i*110), 520, 100, 40);
+            action_btn[i].setForeground(Color.WHITE);
+            action_btn[i].setFont(new Font("MONOSPACE", Font.BOLD, 16));
+            action_btn[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+//            facilitators.add(action_btn[i]);
+        }
+
+
         allocate.add(allocatePanel[0], String.valueOf(toggle[0].getName()));
         allocate.add(allocatePanel[1], String.valueOf(toggle[1].getName()));
 
@@ -435,8 +503,57 @@ public class Design extends Dec{
         allocate.add(allocatePanel[1], String.valueOf(toggle2[1].getName()));
         panel.add(container);
 
+        for (int i = 0; i < txt_edit.length; i++) {
+            txt_edit[i].setFont(new Font("MOPNOSPACE", Font.PLAIN, 18));
+            txt_edit[i].setBounds(10, 80 + (i * 100), 380, 40);
+            allocateSelect[1].setBounds(10, (80 + (2 * 100)), 380, 40);
+            allocateSelect[1].setBackground(Color.WHITE);
+            if (i < 2) {
+                gen_edit[i].setBounds(10 + (i * 80), 80 + (3 * 100), 70, 40);
+                gen_edit[i].setBackground(Color.white);
+                gen_edit[i].setFocusPainted(false);
+                gen_edit[i].setBorderPainted(false);
+                btn_edit.add(gen_edit[i]);
+                body.add(gen_edit[i]);
+            }
+            body.add(txt_edit[i]);
+        }
+
 //        frame.setUndecorated(true);
 //        frame.setIconImage(buff);
+        body.add(allocateSelect[1]);
+        close.setBounds(350, 0, 50, 40);
+        close.setForeground(Color.WHITE);
+        close.setFont(new Font("MONOSPACE", Font.PLAIN, 15));
+        close.setBackground(new Color(180, 50, 50));
+        close.setFocusPainted(false);
+        close.setBorderPainted(false);
+        close.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        update.setBounds(290, 430, 100, 40);
+        update.setForeground(Color.WHITE);
+        update.setFont(new Font("MONOSPACE", Font.PLAIN, 15));
+        update.setBackground(new Color(0,120,20));
+        update.setFocusPainted(false);
+        update.setBorderPainted(false);
+        update.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        edit.setFocusPainted(false);
+        edit.setBorderPainted(false);
+        edit.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        body.add(update);
+        body.add(close);
+        body.setBackground(Color.WHITE);
+        body.setLayout(null);
+
+        f.getRootPane().setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        f.add(body);
+        f.setSize(400,480);
+        f.setLocationRelativeTo(null);
+        f.setUndecorated(true);
+        f.setBackground(new Color(255,255,255));
+
         frame.add(container);
         frame.add(title);
         frame.add(nav);
@@ -444,7 +561,7 @@ public class Design extends Dec{
         frame.add(panel);
         frame.setSize(1500,800);
         frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
+//        frame.setResizable(false);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -506,8 +623,8 @@ public class Design extends Dec{
             btn[i].setFont(new Font("Monospace", Font.BOLD, 18));
             btn[i].setForeground(Color.WHITE);
             btn[i].setFocusPainted(false);
-            btn[i].setBorderPainted(true);
-            btn[i].setBorder(BorderFactory.createLineBorder(new Color(130,100,255), 3));
+//            btn[i].setBorderPainted(true);
+//            btn[i].setBorder(BorderFactory.createLineBorder(new Color(130,100,255), 3));
             btn[i].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             btn[i].setName(btnName[i]);
             frame.add(btn[i]);
