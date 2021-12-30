@@ -8,15 +8,17 @@ import java.util.HashMap;
 abstract class Dec{
     ArrayList<String> obj = new ArrayList<>();
     HashMap<Integer, String> map = new HashMap<>();
+    HashMap<Integer, String> map2 = new HashMap<>();
     DefaultListModel<String> item = new DefaultListModel<>();
     DefaultListModel<String> item2 = new DefaultListModel<>();
+    DefaultListModel<String> item3 = new DefaultListModel<>();
 
     String empty = "----------------";
     int valid = 0;
     String message = "";
     int cl = 0;
     int deptNum,  lectNum, group;
-    String lectName, lectDept, lectGender, lectMobile, deptName, deptLvl, deptStd, facName, facMobile, facGen;
+    String lectName, lectDept, lectGender, lectMobile, deptName, deptLvl, deptStd, facName, facMobile, facGen, deptSect;
     String url = "jdbc:mysql://localhost/allocate";
     String uname = "root";
     String psw = "";
@@ -60,13 +62,13 @@ abstract class Dec{
         }
     };
 
-    String[] col = {"S/N","Department", "Level", "Group N0"};
-    Object[][] manual_data = new String[50][4];
+    String[] col = {"S/N","Department", "Section", "Level", "Group N0"};
+    Object[][] manual_data = new String[50][5];
     JTable manual = new JTable(manual_data, col);
     JScrollPane maual_scroll = new JScrollPane(manual);
 
-    String[] colRand = {"S/N","Department", "Level", "Group N0"};
-    Object[][] rand_data = new String[50][4];
+    String[] colRand = {"S/N","Department", "Section", "Level", "Group N0"};
+    Object[][] rand_data = new String[50][5];
     JTable rand = new JTable(rand_data, colRand);
     JScrollPane rand_scroll = new JScrollPane(rand);
 
@@ -86,14 +88,16 @@ abstract class Dec{
     };
 
     String[] dashColumns = {"S/N","Name", "Department", "Mobile", "Status"};
-    String[] deptColumns = {"S/N","Department", "Course", "Total Students","Total Group", "Allocated", "Not Allocated","Un Grouped"};
+    String[] deptColumns = {"S/N","Department", "Course", "Section", "Total Students","Total Group", "Allocated",
+            "Not " +
+            "Allocated","Un Grouped"};
     String[] facColumns = {"S/N"," Name ", "Department", "Mobile", "Status"};
-    String[] courseColumns = {"S/N", "Course Title", "Corse Code", "Department", "Level"};
+    String[] courseColumns = {"S/N", "Course Title", "Corse Code", "Department", "Section", "Level"};
 
     String[][] dashData = new String[50][6];
-    String[][] deptData = new String[50][8];
+    String[][] deptData = new String[50][9];
     String[][] facData = new String[50][7];
-    String[][] courseData = new String[50][5];
+    String[][] courseData = new String[50][6];
 
     JTable facTable = new JTable(facData, facColumns);
     JTable dashTable = new JTable(dashData, dashColumns);
@@ -162,7 +166,16 @@ abstract class Dec{
 
     JFrame frame = new JFrame();
     MaskFormatter mf = new MaskFormatter("#### ### ####");
-    JPanel[] bg = {new JPanel(),new JPanel(), new JPanel(), new JPanel(), new JPanel(), new JPanel(), new JPanel()};
+    JPanel[] bg = {new JPanel(),new JPanel(), new JPanel(), new JPanel(), new JPanel(), new JPanel(), new JPanel(),
+            new JPanel(){
+                @Override
+                public void paint(Graphics graphics) {
+                    super.paint(graphics);
+                    graphics.setFont(new Font("monospace", Font.BOLD, 23));
+                    graphics.setColor(Color.WHITE);
+                    graphics.drawString("Selected Lecturers", 10, 30);
+                }
+            }};
     JPanel[] tableHeader = {new JPanel(),new JPanel(), new JPanel(), new JPanel(), new JPanel(), new JPanel(), new JPanel()};
     JLabel[] tableHeaderText = {new JLabel("Supervisors"), new JLabel("Supervisors"), new JLabel("Departments"),
             new JLabel("Allocate Supervisors"), new JLabel("Allocate Supervisors"), new JLabel("Allocated " +
@@ -178,6 +191,11 @@ abstract class Dec{
     JLabel header2 = new JLabel("Add Department");
     JButton submit2 = new JButton("Add ");
     ButtonGroup lvl = new ButtonGroup();
+    ButtonGroup sect = new ButtonGroup();
+    JRadioButton[] section = {
+            new JRadioButton("FT"),
+            new JRadioButton("PT")
+    };
     JRadioButton[] level = {
         new JRadioButton("EED 126"),
         new JRadioButton("EED 216"),
@@ -227,7 +245,9 @@ abstract class Dec{
         public void paint(Graphics g) {
             super.paint(g);
             g.setColor(Color.BLACK);
-            g.drawRoundRect(950, 120, 300, 340, 10, 10);
+            g.drawRoundRect(950, 120, 300, 500, 10, 10);
+            g.setFont(new Font("Monospace", Font.PLAIN, 18));
+            g.drawString("Section :", 960, 410);
             repaint();
         }
     };
@@ -336,7 +356,7 @@ abstract class Dec{
 
 
     /**
-     * Corse Panel
+     * Course Panel
      * */
     JPanel course_table  = new JPanel(new CardLayout());
     JPanel course_response  = new JPanel(null){
@@ -392,9 +412,28 @@ abstract class Dec{
             }
         }
     };
+
+    JButton close2 = new JButton("X");
+    JFrame f2 = new JFrame();
+    JPanel lectSelect = new JPanel(){
+        @Override
+        public void paint(Graphics g) {
+            super.paint(g);
+            g.setColor(new Color(90,90,255));
+            g.fillRect(0, 0, 850, 40);
+
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("MONOSPACE", Font.BOLD, 17));
+            g.drawString("Select", 10, 25);
+        }
+    };
+
     JTextField[] txt_edit = {new JTextField(),new JTextField()};
     JRadioButton[] gen_edit = {new JRadioButton("Male"), new JRadioButton("Female")};
     ButtonGroup btn_edit = new ButtonGroup();
     JButton edit = new JButton("UPDATE");
+    JButton select = new JButton("Select");
+    JButton select_edit = new JButton("Edit");
+
     protected Dec() throws ParseException {}
 }

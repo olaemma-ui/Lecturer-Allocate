@@ -25,10 +25,7 @@ public class $Database extends Dec{
     boolean dbAction(String q){
         boolean bool = false;
         try{
-            if (query.executeUpdate(q) == 1){
-                bool =  true;
-            }else
-                bool = false;
+            bool = query.executeUpdate(q) == 1;
         }catch (Exception e){e.printStackTrace();}
         return bool;
     }
