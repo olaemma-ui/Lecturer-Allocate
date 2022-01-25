@@ -4,9 +4,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Control extends Design implements ActionListener, KeyListener, ListSelectionListener, MouseListener {
     $Database db = new $Database();
@@ -32,25 +30,38 @@ public class Control extends Design implements ActionListener, KeyListener, List
 
     /**
      *
-     * Couser Allocate Select
+     * Select lecturers to Allocate
      * */
     void course_allocate_select(int state){
-        String upd = "UPDATE course_allocated SET state = '"+state+"' WHERE lectId = '"+$_course_allocate+"'";
+        String upd = "UPDATE course_allocated SET state = '"+state+"' AND status = '"+state+"' WHERE lectId = '"+$_course_allocate+"'";
         db.dbAction(upd);
-//        if (){
+
             upd = "UPDATE lecturers SET state = '"+state+"' WHERE lectId = '"+$_course_allocate+"'";
             if (db.dbAction(upd)) {
-                String sel = "SELECT * FROM lecturers WHERE lectId = '"+$_course_allocate+"'";
-                ResultSet result;
                 try {
+                    map2.clear();
+                    map3.clear();
+                    item3.clear();
+                    item2.clear();
+                    String sel = "SELECT * FROM lecturers WHERE type = '1'";
+                    ResultSet result;
                     result = db.query.executeQuery(sel);
+                    int k = 0, j = 0;
                     while (result.next()) {
-                        if (state == 0)
-                            item3.removeElement(result.getString("name"));
-                        if (state == 1)
+                        if (result.getInt("state") == 0) {
+                            item2.addElement(result.getString("name"));
+                            map2.put(j + 1, result.getString("lectId"));
+                            j++;
+                        }
+                        if (result.getInt("state") == 1) {
                             item3.addElement(result.getString("name"));
+                            map3.put(k + 1, result.getString("lectId"));
+                            k++;
+                        }
                     }
+
                     list3.repaint();
+                    list2.repaint();
                     System.out.println(item3);
                 }catch(Exception ex){/**/}
 
@@ -164,6 +175,8 @@ public class Control extends Design implements ActionListener, KeyListener, List
         for (JRadioButton r: level) {
             r.addActionListener(this);
         }
+
+
         input5.addKeyListener(this);
         num.addActionListener(this);
         num.addKeyListener(this);
@@ -184,6 +197,8 @@ public class Control extends Design implements ActionListener, KeyListener, List
         edit.addActionListener(this);
         select.addActionListener(this);
         select_edit.addActionListener(this);
+        print[0].addActionListener(this);
+        print[1].addActionListener(this);
     }
 
     /**
@@ -220,6 +235,7 @@ public class Control extends Design implements ActionListener, KeyListener, List
                     lectGender = g.getText().trim();
                 }
             }
+
             if (valid == 4){
                 if (db.dbAction("INSERT INTO lecturers values('0', '"+lectName+"', '"+lectDept+"', '"+lectGender+"' ," +
                         " " +
@@ -274,8 +290,8 @@ public class Control extends Design implements ActionListener, KeyListener, List
                     grp_no = Integer.parseInt(deptStd)/5;
                     gpn = 5;
                 }
-                System.out.println(deptStd);
-                if (db.dbAction("INSERT INTO departments VALUES('0','"+deptName+"','"+deptLvl+"', '"+deptSect+"', '"+Integer.parseInt(deptStd)+"', '"+grp_no+ "', '"+0+ "', '"+grp_no+ "', '"+action.departmentID()+"', '"+0+"', '"+(Integer.parseInt(deptStd) - (grp_no*gpn))+"')")) {
+
+                if (db.dbAction("INSERT INTO departments VALUES('0','"+deptName+"','"+deptLvl+"', '"+deptSect+"', '"+Integer.parseInt(deptStd)+"', '"+grp_no+ "', '"+0+ "', '"+grp_no+ "', '"+action.departmentID()+"', '"+0+"', '"+(Integer.parseInt(deptStd) - (grp_no*gpn))+"', '0')")) {
                     alertMessage(0,1,"Department Added");
                     lvl.clearSelection();
                     sect.clearSelection();
@@ -287,6 +303,9 @@ public class Control extends Design implements ActionListener, KeyListener, List
             }
             select("Departments");
         }
+
+
+
         if (vd == submit3){
             valid = 0;
             for (JComboBox jComboBox : allocateSelect) {
@@ -365,7 +384,7 @@ public class Control extends Design implements ActionListener, KeyListener, List
             a.repaint();
         }
         if (vd == submit6){
-            if (!input5.getText().isEmpty()){
+            if (!input5.getText().isEmpty() && Integer.parseInt(input5.getText()) < 10 && Integer.parseInt(input5.getText()) > 0){
                 input5.setBorder(BorderFactory.createLineBorder(colorTop[1], 3));
                 course_allocate(Integer.parseInt(input5.getText()));
             }else
@@ -374,7 +393,7 @@ public class Control extends Design implements ActionListener, KeyListener, List
     }
 
     /**
-     * Facilitator
+     * Facilitator, Lecturers, Departments Method
      * */
     void facSelect(){
         String select = "SELECT * FROM lecturers WHERE type = '1' ORDER BY ID DESC";
@@ -387,12 +406,20 @@ public class Control extends Design implements ActionListener, KeyListener, List
             int i = 0;
             item2.removeAllElements();
             action.clearTable(facData);
+            int j = 0,k =0;
             while (result.next()) {
                 facData[i][0] = "" + (i+1) + "";
                 facData[i][1] = result.getString("name");
-                item2.addElement(result.getString("name"));
-                map2.put(i+1, result.getString("lectId"));
-
+                if (result.getInt("state") == 0) {
+                    item2.addElement(result.getString("name"));
+                    map2.put(j + 1, result.getString("lectId"));
+                    j++;
+                }
+                if (result.getInt("state") == 1) {
+                    item3.addElement(result.getString("name"));
+                    map3.put(k + 1, result.getString("lectId"));
+                    k++;
+                }
                 facData[i][2] = result.getString("departments");
                 facData[i][3] = result.getString("mobile");
                 if (result.getString("status").equalsIgnoreCase("1")) {
@@ -407,7 +434,6 @@ public class Control extends Design implements ActionListener, KeyListener, List
                 }
             }
             type_select(1);
-//            System.out.println("Facselect = "+map2);
             facTable.repaint();
             result.close();
         }catch (Exception ex){/**/}
@@ -582,6 +608,10 @@ public class Control extends Design implements ActionListener, KeyListener, List
         }catch (Exception e){e.printStackTrace();}
         return ck;
     }
+
+    /**
+     * Display Lecturers Details
+     * */
     void show (String $_show_id, int table){
         $_course_allocate = $_show_id;
 
@@ -631,7 +661,6 @@ public class Control extends Design implements ActionListener, KeyListener, List
                         rand_data[i][0] = "" + (i + 1) + "";
                         rand_data[i][1] = result.getString("department");
                         rand_data[i][2] = result.getString("section");
-//                        System.out.println(result.getString("department"));
                         if (result.getString("course").equalsIgnoreCase("eed 216")) {
                             rand_data[i][3] = "ND 2";
                         }
@@ -680,6 +709,10 @@ public class Control extends Design implements ActionListener, KeyListener, List
         }
         catch (Exception ex){/**/}
     }
+
+    /**
+     * Display Data on Tables
+     * */
     void select(String tbl){
         db.dbConnect();
         ResultSet result = null;
@@ -768,54 +801,70 @@ public class Control extends Design implements ActionListener, KeyListener, List
         selecOption.repaint();
     }
 
+    /**
+     * Course Allocate
+     * */
     void course_allocate(int unit){
         ResultSet result = null;
         ArrayList<String> dep_rand = new ArrayList<>();
         ArrayList<String> lect_course = new ArrayList<>();
         try {
-            String trunc = "Delete FROM course_allocated WHERE state = '0'";
+            String trunc = "Delete FROM course_allocated WHERE state = '0' AND status = '0'";
             db.dbAction(trunc);
-//            if (db.dbAction(trunc)) {
-                System.out.println("success");
-                String select = "SELECT * FROM Lecturers WHERE type = '1'";
-                result = db.query.executeQuery(select);
-                while (result.next()) {
-                    lect_course.add(result.getString("lectId"));
-                }
-                int[] lect_rand = action.$_Key_Gen(lect_course.size(), lect_course.size());
-                int success = 0;
-                select = "SELECT * FROM departments where status = '0'";
-                result = db.query.executeQuery(select);
-                dep_rand.clear();
-                while (result.next()) {
-                    dep_rand.add(result.getString("deptId"));
-                }
-                int[] rand = action.$_Key_Gen(unit / 2, dep_rand.size());
-                for (int i = 0; i < lect_course.size(); i++) {
-                    for (int j = 0; j < (unit / 2); j++) {
-                        if (dep_rand.size() > 0 && dep_rand.size() >= unit / 2) {
 
-                            System.out.println(dep_rand.size());
-                            System.out.println(rand.length);
-                            for (int k : rand) {
-                                System.out.println("Random Keys = " + k);
-                                String insert =
-                                        "INSERT INTO course_allocated values ('0', '" + lect_course.get(lect_rand[i]) + "', '" + dep_rand.get(k) +
-                                                "', '0')";
-                                if (db.dbAction(insert)) {
-                                    success++;
-                                    dep_rand.remove(k);
-                                }
-                            }
+            String update = "UPDATE departments SET status = '0' WHERE state = '0'";
+            db.dbAction(update);
+
+            String select = "SELECT * FROM Lecturers WHERE type = '1' AND state = '0'";
+            result = db.query.executeQuery(select);
+            while (result.next()) {
+                lect_course.add(result.getString("lectId"));
+            }
+            int[] lect_rand = action.$_Key_Gen(lect_course.size(), lect_course.size());
+
+
+            int success = 0;
+            select = "SELECT * FROM departments where status = '0' AND state = '0'";
+            result = db.query.executeQuery(select);
+            dep_rand.clear();
+            while (result.next()) {
+                dep_rand.add(result.getString("deptId"));
+            }
+
+            int[] key = new int[unit/2];
+            Random rand = new Random();
+            boolean generate;
+            for (int j = 0; j < key.length; j++) {
+                generate = true;
+                int num = 0;
+                while (generate) {
+                    num = rand.nextInt(dep_rand.size());
+                    generate = false;
+
+                    for (int i : key) {
+                        if (i == num) {
+                            generate = true;
                         }
-                        if (success == lect_course.size())
-                            JOptionPane.showMessageDialog(frame, "Allocated");
                     }
                 }
-//            }
+                key[j] = num;
+            }
+            int k = 0;
+            for(int i = 0; i < lect_course.size(); i++){
+                for (int g = 0; g < (unit/2) && k < dep_rand.size(); g++) {
+                    String insert = "INSERT INTO course_allocated VALUES('0', '"+lect_course.get(lect_rand[i])+
+                            "', '"+dep_rand.get(k)+"', '0', '0')";
+                    if (db.dbAction(insert)){
+                        k++;
+                    }
+                }
+            }
+            if (k == dep_rand.size())
+                JOptionPane.showMessageDialog(frame, "Course Allocated");
         }catch (Exception ex){ex.printStackTrace();}
         deptSelect();
     }
+
 
     void $_E_D_action(String $ed_action, String $ed_tbl, String $ed_id) {
         if ($ed_action.equalsIgnoreCase("delete")) {
@@ -838,9 +887,8 @@ public class Control extends Design implements ActionListener, KeyListener, List
             Edit($ed_tbl, $ed_id, page);
         }
     }
-
     void Edit (String tbl, String id, String page) {
-        System.out.println(id);
+//        System.out.println(id);
         ResultSet result;
         f.setVisible(true);
         frame.setVisible(false);
@@ -1065,7 +1113,7 @@ public class Control extends Design implements ActionListener, KeyListener, List
 
             if (e.getSource() == action_btn[1]) {
                 $_E_D_action("delete", tbl_act, cnt);
-                System.out.println(cnt);
+//                System.out.println(cnt);
                 deptSelect();
                 select("departments");
                 type_select(type);
@@ -1122,7 +1170,6 @@ public class Control extends Design implements ActionListener, KeyListener, List
         }
         if (e.getSource() == select){
             course_allocate_select(1);
-//            JOptionPane.showMessageDialog(frame, "Hola");
         }
     }
     public static void main(String[] args) throws Exception { new Control(); }
@@ -1181,6 +1228,12 @@ public class Control extends Design implements ActionListener, KeyListener, List
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
+        if (e.getSource() == list3){
+            if (list3.getSelectedIndex() >= 0 ){
+                show(map3.get(list3.getSelectedIndex()+1), 2);
+            }
+        }
+
         if (e.getSource() == list ){
             if (list.getSelectedIndex() >= 0 ){
                 show(map.get(list.getSelectedIndex()+1), 1);
@@ -1192,6 +1245,7 @@ public class Control extends Design implements ActionListener, KeyListener, List
                 show(map2.get(list2.getSelectedIndex()+1), 2);
             }
         }
+
     }
 
      @Override

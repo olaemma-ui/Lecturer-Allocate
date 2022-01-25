@@ -15,7 +15,7 @@ public class Design extends Dec{
         container.add(allocate, String.valueOf(btn[4].getText()));
         container.add(course, String.valueOf(btn[5].getText()));
 
-        container.setBounds(205, 50, 1260, 700);
+        container.setBounds(205, 50, 1260, 750);
 
         course.setLayout(null);
         dash.setLayout(null);
@@ -262,8 +262,20 @@ public class Design extends Dec{
             submit3.setForeground(Color.white);
             submit3.setCursor(new Cursor(Cursor.HAND_CURSOR));
             submit3.setFocusPainted(false);
-//            allocatePanel[1].setBackground(Color.BLACK);
+
+            for(JButton b: print){
+                b.setBackground(colorTop[1]);
+                b.setBounds(1150, 660, 120, 40);
+                b.setFont(new Font("monospace", Font.BOLD, 17));
+                b.setForeground(Color.white);
+                b.setFocusPainted(false);
+                b.setBorderPainted(false);
+                b.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
             allocatePanel[1].add(toggle2[i]);
+            course.add(print[1]);
+            allocatePanel[1].add(print[0]);
             allocatePanel[0].add(toggle[i]);
             allocatePanel[0].add(input3[i]);
             allocatePanel[0].add(allocateSelect[0]);
@@ -434,15 +446,18 @@ public class Design extends Dec{
         facilitators.add(tableHeader[6]);
 
         for (int i = 0; i < outPut.length; i++) {
-            outPut[i].setBounds(20, 30+(i*60), 200, 40);
+            outPut[i].setBounds(0, i*60, 200, 40);
             outPut[i].setFont(new Font("monospace", Font.PLAIN, 23));
-            outPutRand[i].setBounds(20, 30+(i*60), 200, 40);
+            outPutRand[i].setBounds(0, i*60, 200, 40);
             outPutRand[i].setFont(new Font("monospace", Font.PLAIN, 23));
 
-            $_outPut_response_rand[i].setBounds(220, 30+(i*60), 400, 40);
+            $_outPut_response_rand[i].setBounds(200, i*60, 400, 40);
             $_outPut_response_rand[i].setFont(new Font("monospace", Font.PLAIN, 27));
-            $_outPut_response[i].setBounds(220, 30+(i*60), 400, 40);
+            $_outPut_response[i].setBounds(200, i*60, 400, 40);
             $_outPut_response[i].setFont(new Font("monospace", Font.PLAIN, 27));
+
+            resultView[0].setBackground(Color.white);
+            resultView[1].setBackground(Color.white);
 
             allocateSelect[0].setFont(new Font("monospace",Font.PLAIN ,17));
             resultView[0].add($_outPut_response[i]);
@@ -467,7 +482,7 @@ public class Design extends Dec{
         manual.setFont(new Font("monospace", Font.PLAIN, 17));
 
         $_resultView_table_panel[0].add(maual_scroll);
-        $_resultView_table_panel[0].setBounds(0, 275, 800, 340);
+        $_resultView_table_panel[0].setBounds(0, 240, 850, 340);
         $_resultView_table_panel[0].setBackground(Color.BLACK);
         resultView[0].add($_resultView_table_panel[0]);
 
@@ -489,7 +504,7 @@ public class Design extends Dec{
 
 
         $_resultView_table_panel[1].add(rand_scroll);
-        $_resultView_table_panel[1].setBounds(0, 275, 800, 340);
+        $_resultView_table_panel[1].setBounds(0, 240, 850, 340);
         $_resultView_table_panel[1].setBackground(Color.BLACK);
         rand.getColumnModel().getColumn(0).setPreferredWidth(40);
         rand.getColumnModel().getColumn(1).setPreferredWidth(600);
@@ -543,6 +558,7 @@ public class Design extends Dec{
         }
 
 
+        allocate.setBackground(Color.white);
         allocate.add(allocatePanel[0], String.valueOf(toggle[0].getName()));
         allocate.add(allocatePanel[1], String.valueOf(toggle[1].getName()));
 

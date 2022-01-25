@@ -6,7 +6,7 @@ import java.text.ParseException;
 
 public class $Database extends Dec{
     Statement query;
-    String srcTxt = "";
+    String srcTxt = ""; 
     Connection con = DriverManager.getConnection(url, uname, psw);
 
     protected $Database() throws ParseException, SQLException {}

@@ -33,6 +33,7 @@ public class Action {
     int[] $_Key_Gen(int Dnum, int count){
         int[] key = new int[Dnum];
         Random rand = new Random();
+
         boolean generate;
         for (int i = 0; i < key.length; i++) {
             generate = true;
@@ -69,7 +70,7 @@ public class Action {
                 while (r != -1){
                     check+=(char)r;
                     if (r == 32){
-                        if (check == lectId){
+                        if (check.equals(lectId)){
                             lectState = true;
                         }
                         check = "";
@@ -118,9 +119,6 @@ public class Action {
 
         return deptId;
     }
-//    /**
-//     * Search For Lecturers
-//     * */
 
     /**
      * Clear Table

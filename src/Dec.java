@@ -1,4 +1,4 @@
-import javax.swing.*;
+    import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.text.ParseException;
@@ -9,6 +9,7 @@ abstract class Dec{
     ArrayList<String> obj = new ArrayList<>();
     HashMap<Integer, String> map = new HashMap<>();
     HashMap<Integer, String> map2 = new HashMap<>();
+    HashMap<Integer, String> map3 = new HashMap<>();
     DefaultListModel<String> item = new DefaultListModel<>();
     DefaultListModel<String> item2 = new DefaultListModel<>();
     DefaultListModel<String> item3 = new DefaultListModel<>();
@@ -43,10 +44,10 @@ abstract class Dec{
             public void paint(Graphics g) {
                 super.paint(g);
                 g.setColor(new Color(90,70,255));
-                g.fillRoundRect(0,210,800,60,0,0);
+                g.fillRoundRect(0,175,850,60,0,0);
                 g.setColor(Color.WHITE);
                 g.setFont(new Font("MONOSPACE", Font.BOLD, 30));
-                g.drawString("Allocated Students", 10, 250);
+                g.drawString("Allocated Students", 10, 210);
             }
         },
         new JPanel(null){
@@ -54,10 +55,10 @@ abstract class Dec{
             public void paint(Graphics g) {
                 super.paint(g);
                 g.setColor(new Color(90,70,255));
-                g.fillRoundRect(0,210,800,60,0,0);
+                g.fillRoundRect(0,175,850,60,0,0);
                 g.setColor(Color.WHITE);
                 g.setFont(new Font("MONOSPACE", Font.BOLD, 30));
-                g.drawString("Allocated Students", 10, 250);
+                g.drawString("Allocated Students", 10, 210);
             }
         }
     };
@@ -433,7 +434,12 @@ abstract class Dec{
     ButtonGroup btn_edit = new ButtonGroup();
     JButton edit = new JButton("UPDATE");
     JButton select = new JButton("Select");
-    JButton select_edit = new JButton("Edit");
+    JButton select_edit = new JButton("Remove");
 
+
+    JButton[] print = {
+            new JButton("Download"),
+            new JButton("Download")
+    };
     protected Dec() throws ParseException {}
 }
